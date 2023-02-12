@@ -17,8 +17,28 @@ data "aws_ami" "app_ami" {
 resource "aws_instance" "blog" {
   ami           = data.aws_ami.app_ami.id
   instance_type = var.instance_type
+  
+  vpc_security_group_ids = [module.blog.sg.security_group_id]
 
   tags = {
-    Name = "HelloWorld"
+    Name = "Learning Terraform"
   }
 }
+
+module "block_sg" {
+  source = "terraform-aws-modules/security-group/aws//modules"
+  version = "4.13.0"
+  name = "blog_new"
+
+  vpc_id      = data.aws.vpc.default.id
+
+  ingress_rules = ["http-80-tcp", "https-443-tcp"]
+  ingress_cidr_blocks = ["0.0.0.0/0"]
+  
+  
+  egress_rules = ["all-all"]
+  egress_cidr_blocks = ["0.0.0.0/0"]
+
+  ingress_cidr_blocks = ["10.10.0.0/16"]
+}
+  
