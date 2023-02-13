@@ -55,6 +55,6 @@ module "block_sg" {
   egress_rules = ["all-all"]
   egress_cidr_blocks = ["0.0.0.0/0"]
 
-  ingress_cidr_blocks = ["10.10.0.0/16"]
+ //ingress_cidr_blocks = ["10.10.0.0/16"]
 }
   
